@@ -259,7 +259,7 @@ class TreeNode ( object ):
 
 		# Step 1: Write my own file, if necessary
 		if self.prob < 1:
-			params = self.params.values()
+			params = list(self.params.values())				# puertoRico - update for python 3
 			data = params[0].as_ampl( self.name )
 			if len( params ) > 1:
 				data += '\n' + '\n'.join(p.as_ampl() for p in params[1:])
@@ -662,5 +662,5 @@ if '__main__' == __name__:
 		msg = ('\n\nIf you need more verbose (potentially helpful) information '
 		      'about this error, you can run this program again, and add the'
 		      ' "--debug" command line flag.\n')
-		msg = '\n\n' + str(e) + msg
+		msg = '\n\n' + msg
 		SE.write(msg)

@@ -22,6 +22,9 @@ temoa_model
 tools
 	stochastics
 		generate_scenario_tree.py - added additional outputs to stochastic simulations by adding lines 343-348 and 360-368
+			Line 262 - update for python 3
+			params = list(self.params.values())				# puertoRico - update for python 3
+
 			Lines 343-348:
 			emission_keys = [(e, p, t) for e, p, t in instance.V_EmissionActivityByPeriodAndTech.keys()
 						 if p == se] 									# puertoRico
