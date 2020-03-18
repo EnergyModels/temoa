@@ -12,6 +12,13 @@ temoa_model
 			271 M.tech_CapReduction = Set()
 			272 M.CapReduction = Param( M.time_optimize, M.tech_all, M.vintage_all, default = 1.0)
 
+	temoa_run.py - remove manual entry for scripts
+	    comment out lines 548-551
+	    	#try:  #make compatible with Python 2.7 or 3 				# puertoRico - remove manual entry for scripts
+	        #	raw_input() # Give the user a chance to confirm input
+	        #except:
+	        #	input()
+
 tools
 	stochastics
 		generate_scenario_tree.py - added additional outputs to stochastic simulations by adding lines 343-348 and 360-368

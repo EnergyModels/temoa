@@ -545,9 +545,9 @@ def parse_args ( ):
 	
 	SE.write("Continue Operation? [Press enter to continue or CTRL+C to abort]\n")
 	SE.flush()
-	try:  #make compatible with Python 2.7 or 3
-		raw_input() # Give the user a chance to confirm input
-	except:
-		input()
+	#try:  #make compatible with Python 2.7 or 3 						# puertoRico - remove manual entry for scripts
+	#	raw_input() # Give the user a chance to confirm input
+	#except:
+	#	input()
 		
 	return options, config_flag
