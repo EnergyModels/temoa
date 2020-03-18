@@ -4,7 +4,7 @@ verbose = True
 force = True
 
 dirname = 'WD_0'
-modelpath = '../temoa_model/temoa_model.py'
+modelpath = '../../temoa_model/temoa_model.py'
 dotdatpath = '../data_files/WD_0.dat'
 stochasticset = 'time_optimize'
 stochastic_points = (2016, 2021, 2026, 2031, 2036, )
