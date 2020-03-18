@@ -106,7 +106,7 @@ possibility.
         return value(M.CapacityFactorProcess[s, d, t, v]) \
             * value(M.CapacityToActivity[t]) * value(M.SegFrac[s, d]) \
             * value(M.ProcessLifeFrac[p, t, v]) \
-            * M.V_Capacity[t, v] == M.V_Activity[p, s, d, t, v] + sum( \
+            * M.V_Capacity[t, v] * value(M.CapReduction[p,t,v]) == M.V_Activity[p, s, d, t, v] + sum( \
             M.V_Curtailment[p, s, d, S_i, t, v, S_o] \
             for S_i in M.processInputs[p, t, v] \
             for S_o in M.ProcessOutputsByInput[p, t, v, S_i])
@@ -115,7 +115,7 @@ possibility.
         * value(M.CapacityToActivity[t]) \
         * value(M.SegFrac[s, d]) \
         * value(M.ProcessLifeFrac[p, t, v]) \
-        * M.V_Capacity[t, v] >= M.V_Activity[p, s, d, t, v]
+        * M.V_Capacity[t, v] * value(M.CapReduction[p,t,v]) >= M.V_Activity[p, s, d, t, v] # puertoRico
 
 def ActivityByPeriodAndProcess_Constraint(M, p, t, v):
     r"""

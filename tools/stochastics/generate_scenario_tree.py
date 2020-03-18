@@ -340,6 +340,12 @@ def write_scenario_file ( stochasticset, tree ):
 		             if index[0] == se]
 		processes = [(t, v) for p, s, d, i, t, v, o in flow_keys
 		             if v == se]
+		emission_keys = [(e, p, t) for e, p, t in instance.V_EmissionActivityByPeriodAndTech.keys()
+						 if p == se] 																	# puertoRico
+		activity_keys = [(p, t, c) for p, t, c in instance.V_ActivityByPeriodTechAndOutput.keys()
+						 if p == se] 																	# puertoRico
+		capacity_keys = [(p, t) for p, t in instance.V_CapacityAvailableByPeriodAndTech.keys()
+						 if p == se] 																	# puertoRico
 
 		stage_vars = list()
 		stage_vars.extend(
@@ -351,6 +357,15 @@ def write_scenario_file ( stochasticset, tree ):
 		stage_vars.extend(
 		  sorted(set('V_Capacity[{},{}]'.format( *index )
 		     for index in processes )))
+		stage_vars.extend(
+			sorted(set('V_EmissionActivityByPeriodAndTech[{},{},{}]'.format(*index)
+					   for index in emission_keys))) 									# puertoRico
+		stage_vars.extend(
+			sorted(set('V_ActivityByPeriodTechAndOutput[{},{},{}]'.format(*index)
+					   for index in activity_keys))) 									# puertoRico
+		stage_vars.extend(
+			sorted(set('V_CapacityAvailableByPeriodAndTech[{},{}]'.format(*index)
+					   for index in capacity_keys))) 									# puertoRico
 
 		stage_var_sets.append( stages_fmt.format( se, '\n  '.join( stage_vars )))
 

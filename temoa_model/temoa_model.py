@@ -267,6 +267,10 @@ def temoa_create_model(name="Temoa"):
     # This derived variable is used in MGA objective function:
     M.V_ActivityByTech = Var(M.tech_all, domain=NonNegativeReals)
 
+    # puertoRico
+    M.tech_CapReduction = Set()
+    M.CapReduction = Param( M.time_optimize, M.tech_all, M.vintage_all, default = 1.0)
+
     # ---------------------------------------------------------------
     # Declare the Objective Function.
     # ---------------------------------------------------------------

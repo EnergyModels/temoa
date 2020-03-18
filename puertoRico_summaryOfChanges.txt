@@ -1,0 +1,83 @@
+3/18/2020
+Changes to temoa for Jeff's Puerto Rico work
+
+temoa_model
+	temoa_rules.py - added CapReduction parameter
+		modified capacity constraint (Capacity_Constraint)
+			added value(M.CapReduction[p,t,v]) to lines 109 and 118	
+	
+	temoa_model.py - added CapReduction parameter
+		added lines 270-272
+			270 # puertoRico
+			271 M.tech_CapReduction = Set()
+			272 M.CapReduction = Param( M.time_optimize, M.tech_all, M.vintage_all, default = 1.0)
+
+tools
+	stochastics
+		generate_scenario_tree.py - added additional outputs to stochastic simulations by adding lines 343-348 and 360-368
+			Lines 343-348:
+			emission_keys = [(e, p, t) for e, p, t in instance.V_EmissionActivityByPeriodAndTech.keys()
+						 if p == se] 									# puertoRico
+			activity_keys = [(p, t, c) for p, t, c in instance.V_ActivityByPeriodTechAndOutput.keys()
+						 if p == se] 									# puertoRico
+			capacity_keys = [(p, t) for p, t in instance.V_CapacityAvailableByPeriodAndTech.keys()
+						 if p == se] 									# puertoRico
+
+			Lines 360-368:
+			stage_vars.extend(
+			sorted(set('V_EmissionActivityByPeriodAndTech[{},{},{}]'.format(*index)
+					   for index in emission_keys))) 							# puertoRico
+			stage_vars.extend(
+			sorted(set('V_ActivityByPeriodTechAndOutput[{},{},{}]'.format(*index)
+					   for index in activity_keys))) 							# puertoRico
+			stage_vars.extend(
+			sorted(set('V_CapacityAvailableByPeriodAndTech[{},{}]'.format(*index)
+					   for index in capacity_keys))) 							# puertoRico
+
+		rewrite_tree_nodes.py - new function to rewrite values of CapReduction to account for their vintage
+
+
+data_files
+	temoa_schema.sqlite
+		Added the following tables, using the SQL commands below
+			Output_HourlyStorage
+			RampDown
+			RampUp
+			ReserveMargin
+			tech_baseload
+			tech_ramping
+			tech_reserve
+			MinGenGroupTarget
+			MinGenGroupWeight
+
+SQL commands:
+
+CREATE TABLE `Output_HourlyStorage` ( `Period` TEXT, `Season` TEXT, `Day` TEXT, `Tech` TEXT, `Value` REAL );
+
+CREATE TABLE `RampDown` ( `tech` TEXT, `ramp_down` REAL, FOREIGN KEY(`tech`) REFERENCES `tech_ramping`(`tech`), PRIMARY KEY(`tech`) );
+
+CREATE TABLE `RampUp` ( `tech` TEXT, `ramp_up` REAL, FOREIGN KEY(`tech`) REFERENCES `tech_ramping`(`tech`), PRIMARY KEY(`tech`) );
+
+CREATE TABLE "ReserveMargin" ( `demand_comm` TEXT, `reserve_margin` REAL, FOREIGN KEY(`demand_comm`) REFERENCES `Demand`(`demand_comm`), PRIMARY KEY(`demand_comm`) );
+
+CREATE TABLE `tech_baseload` ( `tech` TEXT );
+
+CREATE TABLE `tech_ramping` ( `tech` TEXT, FOREIGN KEY(`tech`) REFERENCES `technologies`(`tech`), PRIMARY KEY(`tech`) );
+
+CREATE TABLE "tech_reserve" ( `tech` TEXT, FOREIGN KEY(`tech`) REFERENCES `technologies`(`tech`), PRIMARY KEY(`tech`) );
+
+CREATE TABLE `MinGenGroupTarget` (
+`period` integer,
+`group_name` text,
+`min_act_g` real,
+`notes` text,
+PRIMARY KEY(period,group_name)
+);
+
+CREATE TABLE `MinGenGroupWeight` (
+`tech` text,
+`group_name` text,
+`act_fraction` REAL,
+`tech_desc` text,
+PRIMARY KEY(tech,group_name)
+);
