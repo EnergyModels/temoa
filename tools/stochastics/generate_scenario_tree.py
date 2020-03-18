@@ -35,7 +35,6 @@ try:
 except ImportError:
     from io import StringIO
 
-import pyomo.environ
 from pyomo.core.base.sets import _SetProduct, SimpleSet
 
 SE = sys.stderr
